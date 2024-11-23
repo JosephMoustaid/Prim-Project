@@ -42,7 +42,7 @@ public class Graph {
     }
 
     // Helper method to find a node by name
-    private Node findNodeByName(String name) {
+    public Node findNodeByName(String name) {
         for (Node node : nodes) {
             if (node.getName().equals(name)) {
                 return node;
@@ -62,15 +62,15 @@ public class Graph {
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
+        str.append("Graph:\n");
+        str.append("Nodes:\n");
         for (Node node : nodes) {
-            str.append(node.getName()).append("");
-            for (Edge edge : edges) {
-                if (edge.getStartNode().equals(node)) {
-                    str.append(" --").append(edge.getWeight()).append("--> ").append(edge.getEndNode().getName());
-                } else if (edge.getEndNode().equals(node)) {
-                    str.append(" <--").append(edge.getWeight()).append(" -- ").append(edge.getStartNode().getName());
-                }
-            }
+            str.append(node.getName()).append("\n");
+        }
+        str.append("\n");
+        str.append("Edges:\n");
+        for (Edge edge : edges) {
+            str.append(edge.toString());
             str.append("\n");
         }
         return str.toString();
@@ -99,16 +99,24 @@ public class Graph {
     }
 
     public Edge findMinimumEdge(ArrayList<Node> visited) {
-        Edge minEdge = null;
+        Edge minEdge = null; // Initialize to null to signify no edge found
         int minWeight = Integer.MAX_VALUE;
 
+        // Iterate through all visited nodes
         for (Node node : visited) {
+            // Find all neighbors of the current node
             ArrayList<Node> neighbours = findNeighbours(node.getName());
+
             for (Node neighbour : neighbours) {
+                // Skip if the neighbor is already visited
                 if (visited.contains(neighbour)) {
                     continue;
                 }
+
+                // Get the edge connecting the current node and the neighbor
                 Edge edge = getEdgeWith(node.getName(), neighbour.getName());
+
+                // If a valid edge is found and its weight is smaller, update minEdge
                 if (edge != null && edge.getWeight() < minWeight) {
                     minEdge = edge;
                     minWeight = edge.getWeight();
@@ -116,8 +124,10 @@ public class Graph {
             }
         }
 
-        return minEdge;
+        return minEdge; // Will return null if no edge is found
     }
+
+
     /**
      * Generates positions for nodes in a graph and updates edge positions.
      *

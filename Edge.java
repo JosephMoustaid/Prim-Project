@@ -57,4 +57,9 @@ public class Edge {
     public double getEndPositionY() {
         return y2;
     }
+
+    @Override
+    public String toString() {
+        return start.getName() + " --" + weight + "--> " + end.getName();
+    }
 }

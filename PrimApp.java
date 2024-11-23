@@ -206,14 +206,45 @@ public class PrimApp extends Application {
             System.err.println("Invalid start node or graph not loaded!");
             return;
         }
+        System.out.println("Running Prim's Algorithm...");
 
+        // Run Prim's algorithm
         Prim prim = new Prim(graph);
         prim.run(startNodeName);
 
-        Graph primGraph = prim.getPrimGraph();
+        Graph primGraph = prim.getPrimGraph(); // Get the MST graph
         System.out.println("Prim's Algorithm Result:");
         System.out.println(primGraph);
 
-        // Optional: visualize Prim's result on the graph canvas
+        // Visualize Prim's result
+        GraphicsContext gc = graphCanvas.getGraphicsContext2D();
+
+        // Change edge colors dynamically
+        for (Edge edge : primGraph.getEdges()) {
+            // Highlight this edge
+            highlightEdge(gc, edge, Color.GREEN);
+
+            // Optional delay to simulate animation
+            try {
+                Thread.sleep(500); // 500 ms delay
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+
+    private void highlightEdge(GraphicsContext gc, Edge edge, Color color) {
+        gc.setStroke(color);
+        gc.setLineWidth(3);
+
+        // Draw the highlighted edge
+        gc.strokeLine(edge.getStartPositionX(), edge.getStartPositionY(),
+                edge.getEndPositionX(), edge.getEndPositionY());
+
+        // Optional: redraw the weight with the new color
+        double midX = (edge.getStartPositionX() + edge.getEndPositionX()) / 2;
+        double midY = (edge.getStartPositionY() + edge.getEndPositionY()) / 2;
+        gc.setFill(color);
+        gc.fillText(String.valueOf(edge.getWeight()), midX, midY);
     }
 }

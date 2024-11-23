@@ -13,13 +13,16 @@ public class Prim {
     public void run(String start) {
         ArrayList<Node> visited = new ArrayList<>();
         prim = new Graph();
+        for (Node node : graph.getNodes()) {
+            prim.addNode(node);
+        }
 
         Node startNode = null;
         for (Node node : graph.getNodes()) {
             if (node.getName().equals(start)) {
                 startNode = node;
                 visited.add(node);
-                prim.addNode(new Node(start));
+                prim.addNode(node); // Use the same reference
                 break;
             }
         }
@@ -36,17 +39,22 @@ public class Prim {
                 break;
             }
 
-            prim.addEdge(minEdge);
+            prim.addEdge(minEdge); // Add the edge directly
 
             Node newNode = minEdge.getStartNode();
             if (visited.contains(newNode)) {
                 newNode = minEdge.getEndNode();
             }
+
             if (!visited.contains(newNode)) {
                 visited.add(newNode);
-                prim.addNode(newNode);
+                prim.addNode(newNode); // Use the original node reference
             }
+
+            System.out.println("Minimum edge added: " + minEdge);
+            System.out.println("Current MST: " + prim);
         }
+
         System.out.println("Prim's algorithm completed:");
         System.out.println(prim);
     }
