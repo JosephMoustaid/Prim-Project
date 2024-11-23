@@ -246,5 +246,22 @@ public class PrimApp extends Application {
         double midY = (edge.getStartPositionY() + edge.getEndPositionY()) / 2;
         gc.setFill(color);
         gc.fillText(String.valueOf(edge.getWeight()), midX, midY);
+
+
+        // Redraw all ndoes so they are on top of the highlighted edge
+        // 6. Draw nodes
+        double nodeRadius = 35; // Define the radius of each node
+        for (Node node : graph.getNodes()) {
+            double x = node.getPositionX();
+            double y = node.getPositionY();
+
+            // 6.1 Draw the node circle
+            gc.setFill(Color.YELLOW);
+            gc.fillOval(x - nodeRadius / 2, y - nodeRadius / 2, nodeRadius, nodeRadius);
+
+            // 6.2 Draw the node label
+            gc.setFill(Color.BLACK);
+            gc.fillText(node.getName(), x - 10, y + 5);
+        }
     }
 }
